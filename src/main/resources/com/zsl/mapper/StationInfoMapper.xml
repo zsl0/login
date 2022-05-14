@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsl.mapper.StationInfoMapper">
+    <select id="selectByTimeAndStationId" resultType="com.zsl.entity.StationInfo">
+        select
+            id, station_id_d, station_id_c, station_name, station_lon, station_lat, station_province, station_city, station_cnty, station_town, station_time, station_win_d_avg_2mi, station_win_s_avg_2mi, create_time, create_by, update_time, update_by
+        from
+            t_station_info_${datetime}
+        <where>
+            <if test="stationInfoVO.stationTime != null">
+                and station_time = #{stationInfoVO.stationTime}
+            </if>
+            <if test="stationInfoVO.stationIdD != null">
+                and station_id_d = #{stationInfoVO.stationIdD}
+            </if>
+        </where>
+    </select>
+
+    <!--select
+    t1.*
+    from
+    (select * from t_station_info_${datetime} where station_time = #{stationInfoVO.stationTime} and station_lon between #{stationInfoVO.stationLon} and #{stationInfoVO.endStationLon}) t1
+    join
+    (select * from t_station_info_${datetime} where station_time = #{stationInfoVO.stationTime} and station_lat between #{stationInfoVO.stationLat} and #{stationInfoVO.endStationLat}) t2
+    on
+    t1.id = t2.id-->
+    <select id="selectByTimeAndStationRange" resultType="com.zsl.entity.StationInfo">
+        select
+            id, station_id_d, station_id_c, station_name, station_lon, station_lat, station_province, station_city, station_cnty, station_town, station_time, station_win_d_avg_2mi, station_win_s_avg_2mi, create_time, create_by, update_time, update_by
+        from
+            t_station_info_${datetime}
+        where
+            station_time = #{stationInfoVO.stationTime} and station_lon between #{stationInfoVO.stationLon} and #{stationInfoVO.endStationLon} and station_lat between #{stationInfoVO.stationLat} and #{stationInfoVO.endStationLat}
+    </select>
+
+    <select id="selectByTimeAndStationArea" resultType="com.zsl.entity.StationInfo">
+        select
+        id, station_id_d, station_id_c, station_name, station_lon, station_lat, station_province, station_city, station_cnty, station_town, station_time, station_win_d_avg_2mi, station_win_s_avg_2mi, create_time, create_by, update_time, update_by
+        from
+            t_station_info_${datetime}
+        <where>
+            <if test="stationInfoVO.stationTime != null">
+                and station_time = #{stationInfoVO.stationTime}
+            </if>
+            <if test="stationInfoVO.stationProvince != null and stationInfoVO.stationProvince != ''">
+                and station_province = #{stationInfoVO.stationProvince}
+            </if>
+            <if test="stationInfoVO.stationCity != null and stationInfoVO.stationCity != ''">
+                and station_city = #{stationInfoVO.stationCity}
+            </if>
+            <if test="stationInfoVO.stationCnty != null and stationInfoVO.stationCnty != ''">
+                and station_cnty = #{stationInfoVO.stationCnty}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOne">
+        INSERT INTO
+            t_station_info_${datetime}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="stationInfo.id != null">
+                    id,
+                </if>
+                <if test="stationInfo.stationIdD != null">
+                    station_id_d,
+                </if>
+                <if test="stationInfo.stationIdC != null and stationInfo.stationIdC != ''">
+                    station_id_c,
+                </if>
+                <if test="stationInfo.stationName != null and stationInfo.stationName != ''">
+                    station_name,
+                </if>
+                <if test="stationInfo.stationLon != null">
+                    station_lon,
+                </if>
+                <if test="stationInfo.stationLat != null">
+                    station_lat,
+                </if>
+                <if test="stationInfo.stationProvince != null and stationInfo.stationProvince != ''">
+                    station_province,
+                </if>
+                <if test="stationInfo.stationCity != null and stationInfo.stationCity != ''">
+                    station_city,
+                </if>
+                <if test="stationInfo.stationCnty != null and stationInfo.stationCnty != ''">
+                    station_cnty,
+                </if>
+                <if test="stationInfo.stationTown != null and stationInfo.stationTown != ''">
+                    station_town,
+                </if>
+                <if test="stationInfo.stationTime != null">
+                    station_time,
+                </if>
+                <if test="stationInfo.stationWinDAvg2Mi != null">
+                    station_win_d_avg_2mi,
+                </if>
+                <if test="stationInfo.stationWinSAvg2Mi != null">
+                    station_win_s_avg_2mi,
+                </if>
+            </trim>
+        VALUES
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="stationInfo.id != null">
+                    #{stationInfo.id},
+                </if>
+                <if test="stationInfo.stationIdD != null">
+                    #{stationInfo.stationIdD},
+                </if>
+                <if test="stationInfo.stationIdC != null and stationInfo.stationIdC != ''">
+                    #{stationInfo.stationIdC},
+                </if>
+                <if test="stationInfo.stationName != null and stationInfo.stationName != ''">
+                    #{stationInfo.stationName},
+                </if>
+                <if test="stationInfo.stationLon != null">
+                    #{stationInfo.stationLon},
+                </if>
+                <if test="stationInfo.stationLat != null">
+                    #{stationInfo.stationLat},
+                </if>
+                <if test="stationInfo.stationProvince != null and stationInfo.stationProvince != ''">
+                    #{stationInfo.stationProvince},
+                </if>
+                <if test="stationInfo.stationCity != null and stationInfo.stationCity != ''">
+                    #{stationInfo.stationCity},
+                </if>
+                <if test="stationInfo.stationCnty != null and stationInfo.stationCnty != ''">
+                    #{stationInfo.stationCnty},
+                </if>
+                <if test="stationInfo.stationTown != null and stationInfo.stationTown != ''">
+                    #{stationInfo.stationTown},
+                </if>
+                <if test="stationInfo.stationTime != null">
+                    #{stationInfo.stationTime},
+                </if>
+                <if test="stationInfo.stationWinDAvg2Mi != null">
+                    #{stationInfo.stationWinDAvg2Mi},
+                </if>
+                <if test="stationInfo.stationWinSAvg2Mi != null">
+                    #{stationInfo.stationWinSAvg2Mi},
+                </if>
+            </trim>
+    </insert>
+
+    <insert id="insertList">
+        INSERT INTO
+            t_station_info_${datetime}(station_id_d, station_id_c, station_name, station_lon, station_lat, station_province, station_city, station_cnty, station_town, station_time, station_win_d_avg_2mi, station_win_s_avg_2mi)
+        VALUES
+            <foreach collection="list" item="item" separator=",">
+                (#{item.stationIdD}, #{item.stationIdC}, #{item.stationName}, #{item.stationLon}, #{item.stationLat}, #{item.stationProvince}, #{item.stationCity}, #{item.stationCnty}, #{item.stationTown}, #{item.stationTime}, #{item.stationWinDAvg2Mi}, #{item.stationWinSAvg2Mi})
+            </foreach>
+    </insert>
+</mapper>

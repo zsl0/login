@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsl.mapper.UserMapper">
+    <resultMap id="selectUserAndRole" type="com.zsl.entity.User" autoMapping="true">
+        <id property="id" column="id"></id>
+        <association property="role" javaType="com.zsl.entity.Role" column="role_id" select="com.zsl.mapper.RoleMapper.selectById">
+            <id column="id" property="id"></id>
+        </association>
+    </resultMap>
+
+    <resultMap id="selectUserAndArticle" type="com.zsl.entity.User" autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="articles" column="id" javaType="List" ofType="com.zsl.entity.Article" select="com.zsl.mapper.ArticleMapper.selectByUserId">
+            <id column="id" property="id"></id>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserAndRoleAll" resultMap="selectUserAndRole">
+        select
+            u.*, ur.role_id role_id
+        from
+            t_user u
+        join
+            t_user_role ur
+        on
+            u.id = ur.user_id
+    </select>
+
+    <select id="selectUserAndArticleAll" resultMap="selectUserAndArticle">
+        select
+            *
+        from
+            t_user
+    </select>
+
+
+</mapper>

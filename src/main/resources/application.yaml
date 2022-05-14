@@ -1,0 +1,100 @@
+server:
+  port: 8888
+#数据源配置
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.10.13.151:3306/login?serverTimezone=Asia/Shanghai
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 50
+      idle-timeout: 300
+
+  #reids 配置
+  redis:
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: 3600
+    host: 172.10.13.151
+    port: 6379
+
+#    邮箱配置
+  mail:
+    host: smtp.163.com
+    password: TJLSQZLKHRCMFSGU
+    username: z249269610@163.com
+    codeExpire: 5   # 自定义邮箱验证码过期时间 单位（分钟）
+
+# application 文件管理
+  profiles:
+    active: dev
+
+# 线程池与定时器任务
+  task:
+    execution:  # spring 自带线程池
+      pool:
+        max-size: 50
+        core-size: 8
+        queue-capacity: 100
+        allow-core-thread-timeout: true
+        keep-alive: 60s
+    scheduling: # spring 定时器
+      pool:
+        size: 16
+  application:
+    name: git_login
+
+#mybatis 配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 选择使用的缓存
+cache:
+  type: redis
+
+# token 超时时间
+token:
+  timeout: 1800
+  secret: sadjkvljbb46s5db45s6t465sdfb1sdfb
+  issuer: zsl
+#debug: true
+
+# 自定义 nc 文件解析 路径前后缀
+ncfile:
+#  prepath: ./ncfile/
+  prepath: ./login/src/main/resources/ncfile/
+#  prepath: C:\Users\Administrator\Desktop\
+  sufpath: .1km.000.nc
+
+# 预警邮箱 出现问题发送邮件
+admin:
+  mail: 249269610@qq.com
+
+# cimiss信息
+cimiss:
+  userId: BEXN_FWZX_qxfwzx
+  pwd: qxfwzx
+  url: http://10.181.31.149:25003/cimiss-web/api
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+springfox:
+  documentation:
+    swagger:
+      v2:
+        enabled: true
+
+# ===== 自定义swagger配置 ===== #
+swagger:
+  enable: true
+  try-host: http://localhost:${server.port}
+  application-name: ${spring.application.name}
+  application-description: 登录练习 整合swagger 2.9.2
+  application-version: v0.0.1
